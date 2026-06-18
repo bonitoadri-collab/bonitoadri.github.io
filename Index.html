@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vive Sin Violencia</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rojo: #C0392B;
+    --rojo-oscuro: #96281B;
+    --rojo-claro: #E74C3C;
+    --crema: #FAF6F0;
+    --beige: #F0E6D3;
+    --cafe: #3D2314;
+    --naranja: #E67E22;
+    --gris: #7F8C8D;
+    --blanco: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--crema);
+    color: var(--cafe);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 999;
+    background: rgba(192,57,43,0.97);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 60px;
+    border-bottom: 2px solid var(--rojo-oscuro);
+  }
+  nav .logo {
+    font-family: 'Space Mono', monospace;
+    color: var(--blanco);
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  nav ul {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+  nav ul li a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: color .2s;
+  }
+  nav ul li a:hover { color: #fff; }
+
+  /* PORTADA */
+  #portada {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #96281B 0%, #C0392B 40%, #E74C3C 75%, #E67E22 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px 40px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  #portada::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 20% 80%, rgba(255,255,255,0.06) 0%, transparent 60%),
+                      radial-gradient(circle at 80% 20%, rgba(0,0,0,0.15) 0%, transparent 50%);
+  }
+  #portada::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .portada-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.4);
+    color: #fff;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 8px 24px;
+    border-radius: 999px;
+    margin-bottom: 32px;
+    backdrop-filter: blur(4px);
+    animation: fadeUp 0.8s ease both;
+  }
+  .portada-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 9vw, 110px);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.0;
+    letter-spacing: -2px;
+    margin-bottom: 16px;
+    animation: fadeUp 0.9s ease 0.1s both;
+  }
+  .portada-titulo span {
+    display: block;
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 700;
+    letter-spacing: 0;
+    opacity: 0.9;
+  }
+  .portada-sub {
+    color: rgba(255,255,255,0.85);
+    font-size: 18px;
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+    animation: fadeUp 1s ease 0.2s both;
+  }
+  .portada-stats {
+    display: flex;
+    gap: 48px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeUp 1.1s ease 0.3s both;
+  }
+  .pstat {
+    text-align: center;
+    color: #fff;
+  }
+  .pstat .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 900;
+    display: block;
+    line-height: 1;
+  }
+  .pstat .lab {
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.6);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: bounce 2s infinite;
+  }
+  .scroll-hint::after {
+    content: '↓';
+    display: block;
+    text-align: center;
+    font-size: 18px;
+    margin-top: 4px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes bounce {
+    0%,100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* SECCIONES GENERALES */
+  section { padding: 90px 40px; }
+  .container { max-width: 1000px; margin: 0 auto; }
+
+  .sec-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rojo);
+    margin-bottom: 12px;
+    display: block;
+  }
+  .sec-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 54px);
+    font-weight: 900;
+    color: var(--cafe);
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+  .sec-titulo em {
+    font-style: italic;
+    color: var(--rojo);
+  }
+  .sec-texto {
+    font-size: 17px;
+    line-height: 1.8;
+    color: #5a3e2b;
+    max-width: 680px;
+  }
+
+  /* PRESENTACIÓN */
+  #presentacion { background: var(--crema); }
+  .pres-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-top: 48px;
+  }
+  .pres-card {
+    background: var(--blanco);
+    border-radius: 16px;
+    padding: 36px;
+    border-left: 5px solid var(--rojo);
+    box-shadow: 0 4px 30px rgba(192,57,43,0.08);
+  }
+  .pres-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    margin-bottom: 12px;
+    color: var(--rojo-oscuro);
+  }
+  .pres-card p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #6b4c3b;
+  }
+  .mision-vision {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* PROBLEMATICA */
+  #problematica {
+    background: var(--cafe);
+    color: var(--crema);
+    position: relative;
+    overflow: hidden;
+  }
+  #problematica::before {
+    content: '"';
+    position: absolute;
+    right: 60px;
+    top: 40px;
+    font-family: 'Playfair Display', serif;
+    font-size: 300px;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+  }
+  #problematica .sec-titulo { color: var(--crema); }
+  #problematica .sec-texto { color: rgba(255,255,255,0.8); }
+  .tipos-violencia {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 48px;
+  }
+  .tipo-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 28px 24px;
+    transition: background .2s;
+  }
+  .tipo-card:hover { background: rgba(255,255,255,0.11); }
+  .tipo-icon {
+    font-size: 32px;
+    margin-bottom: 14px;
+    display: block;
+  }
+  .tipo-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--naranja);
+    margin-bottom: 8px;
+  }
+  .tipo-card p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+  }
+
+  /* DIAGNOSTICO */
+  #diagnostico { background: var(--beige); }
+  .diag-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 48px;
+  }
+  .diag-card {
+    background: var(--blanco);
+    border-radius: 14px;
+    padding: 32px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+  }
+  .diag-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--rojo-oscuro);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--beige);
+  }
+  .diag-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .diag-list li {
+    font-size: 14px;
+    color: #5a3e2b;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .diag-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--rojo);
+  }
+  .metodologia-box {
+    grid-column: 1 / -1;
+    background: var(--rojo);
+    color: #fff;
+    border-radius: 14px;
+    padding: 32px 36px;
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .metod-texto h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+  .metod-texto p { font-size: 15px; opacity: 0.9; line-height: 1.6; }
+  .metod-nums {
+    display: flex;
+    gap: 32px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+  .mn { text-align: center; }
+  .mn .big {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    font-weight: 900;
+    display: block;
+  }
+  .mn .small { font-size: 12px; opacity: 0.85; letter-spacing: 1px; text-transform: uppercase; }
+
+  /* ESTADISTICAS */
+  #estadisticas { background: var(--crema); }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin: 48px 0;
+  }
+  .stat-box {
+    background: var(--blanco);
+    border-radius: 14px;
+    padding: 32px 20px;
+    text-align: center;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    border-top: 4px solid var(--rojo);
+    transition: transform .2s;
+  }
+  .stat-box:hover { transform: translateY(-4px); }
+  .stat-box .porcentaje {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--rojo);
+    line-height: 1;
+    display: block;
+  }
+  .stat-box .desc {
+    font-size: 13px;
+    color: #7a6050;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  /* BARRAS */
+  .chart-container {
+    background: var(--blanco);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    margin-top: 40px;
+  }
+  .chart-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--cafe);
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--beige);
+  }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+  .bar-label {
+    font-size: 13px;
+    color: var(--cafe);
+    width: 200px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+  .bar-track {
+    flex: 1;
+    background: var(--beige);
+    border-radius: 999px;
+    height: 14px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--rojo-oscuro), var(--rojo-claro));
+    animation: growBar 1.4s ease both;
+    transform-origin: left;
+  }
+  @keyframes growBar {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+  .bar-val {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--rojo);
+    width: 40px;
+  }
+
+  /* PASTEL SVG */
+  .charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 32px;
+  }
+  .pie-container {
+    background: var(--blanco);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .pie-container .chart-title { text-align: center; border: none; padding: 0; margin-bottom: 24px; }
+  svg.pie { width: 180px; height: 180px; }
+  .leyenda {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+    width: 100%;
+  }
+  .ley-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--cafe);
+  }
+  .ley-dot {
+    width: 12px; height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* MATERIALES */
+  #materiales { background: var(--beige); }
+  .mat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-top: 48px;
+  }
+  .mat-card {
+    background: var(--blanco);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .mat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(192,57,43,0.15);
+  }
+  .mat-header {
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 56px;
+  }
+  .mat-body { padding: 24px; }
+  .mat-body h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--rojo-oscuro);
+    margin-bottom: 8px;
+  }
+  .mat-body p { font-size: 14px; color: #6b4c3b; line-height: 1.6; }
+  .mat-tag {
+    display: inline-block;
+    background: var(--beige);
+    color: var(--rojo);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-top: 12px;
+    font-weight: 500;
+  }
+  .bg1 { background: linear-gradient(135deg, #C0392B, #E74C3C); }
+  .bg2 { background: linear-gradient(135deg, #3D2314, #6b4c3b); }
+  .bg3 { background: linear-gradient(135deg, #E67E22, #F39C12); }
+  .bg4 { background: linear-gradient(135deg, #2C3E50, #4a6480); }
+  .bg5 { background: linear-gradient(135deg, #8E44AD, #9b59b6); }
+  .bg6 { background: linear-gradient(135deg, #16A085, #1abc9c); }
+
+  /* INFOGRAFIA */
+  .infografia {
+    background: linear-gradient(135deg, var(--rojo), var(--rojo-oscuro));
+    border-radius: 20px;
+    padding: 48px;
+    margin-top: 48px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .infografia::before {
+    content: '🛡';
+    position: absolute;
+    right: 40px;
+    top: 40px;
+    font-size: 100px;
+    opacity: 0.12;
+  }
+  .infografia h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    margin-bottom: 32px;
+  }
+  .info-pasos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 24px;
+  }
+  .info-paso {
+    background: rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .info-paso .num {
+    font-family: 'Space Mono', monospace;
+    font-size: 28px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.4);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .info-paso h4 { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+  .info-paso p { font-size: 13px; opacity: 0.8; line-height: 1.5; }
+
+  /* PROPUESTAS */
+  #propuestas { background: var(--crema); }
+  .prop-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 48px;
+  }
+  .prop-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 24px;
+    align-items: center;
+    background: var(--blanco);
+    border-radius: 14px;
+    padding: 28px 32px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+    border-right: 4px solid transparent;
+    transition: border-color .2s, transform .2s;
+  }
+  .prop-item:hover {
+    border-color: var(--rojo);
+    transform: translateX(4px);
+  }
+  .prop-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--beige);
+    line-height: 1;
+    text-align: center;
+  }
+  .prop-texto h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--rojo-oscuro);
+    margin-bottom: 6px;
+  }
+  .prop-texto p { font-size: 14px; color: #6b4c3b; line-height: 1.5; }
+  .prop-icon { font-size: 36px; }
+
+  /* CREDITOS */
+  #creditos {
+    background: var(--cafe);
+    color: var(--crema);
+    text-align: center;
+  }
+  #creditos .sec-titulo { color: var(--crema); }
+  .equipo-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 48px;
+  }
+  .miembro {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 28px 32px;
+    min-width: 180px;
+    transition: background .2s;
+  }
+  .miembro:hover { background: rgba(255,255,255,0.12); }
+  .miembro .avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--rojo), var(--naranja));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin: 0 auto 16px;
+  }
+  .miembro h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: var(--crema);
+    margin-bottom: 4px;
+  }
+  .miembro p { font-size: 12px; color: rgba(255,255,255,0.55); letter-spacing: 0.5px; }
+  .escuela-info {
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+  }
+  .escuela-info p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.8;
+  }
+  .escuela-info strong { color: rgba(255,255,255,0.8); }
+
+  /* FOOTER */
+  footer {
+    background: #1a0d08;
+    text-align: center;
+    padding: 24px;
+    color: rgba(255,255,255,0.3);
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav ul { display: none; }
+    nav { padding: 0 20px; }
+    section { padding: 60px 20px; }
+    .pres-grid, .diag-grid, .charts-row { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2,1fr); }
+    .mat-grid { grid-template-columns: 1fr 1fr; }
+    .prop-item { grid-template-columns: 50px 1fr; }
+    .prop-icon { display: none; }
+    .metodologia-box { flex-direction: column; }
+    .bar-label { width: 120px; font-size: 12px; }
+  }
+  @media (max-width: 480px) {
+    .mat-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .portada-stats { gap: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Vive Sin Violencia · 2025</div>
+  <ul>
+    <li><a href="#portada">Inicio</a></li>
+    <li><a href="#presentacion">Campaña</a></li>
+    <li><a href="#problematica">Problema</a></li>
+    <li><a href="#estadisticas">Datos</a></li>
+    <li><a href="#materiales">Materiales</a></li>
+    <li><a href="#propuestas">Propuestas</a></li>
+    <li><a href="#creditos">Equipo</a></li>
+  </ul>
+</nav>
+
+<!-- PORTADA -->
+<section id="portada">
+  <div class="portada-badge">Campaña Escolar · 2025</div>
+  <h1 class="portada-titulo">
+    Vive Sin
+    <span>Violencia</span>
+  </h1>
+  <p class="portada-sub">Una campaña estudiantil por ambientes escolares seguros, libres de violencia y discriminación en nuestra comunidad del IPN.</p>
+  <div class="portada-stats">
+    <div class="pstat"><span class="num">7 de 10</span><span class="lab">estudiantes han vivido algún tipo de violencia escolar</span></div>
+    <div class="pstat"><span class="num">42%</span><span class="lab">reporta violencia psicológica constante</span></div>
+    <div class="pstat"><span class="num">65%</span><span class="lab">no sabe a dónde acudir</span></div>
+  </div>
+  <div class="scroll-hint">Descubre más</div>
+</section>
+
+<!-- PRESENTACIÓN -->
+<section id="presentacion">
+  <div class="container">
+    <span class="sec-label">01 — Presentación</span>
+    <h2 class="sec-titulo">¿Qué es la campaña<br><em>Vive sin Violencia?</em></h2>
+    <p class="sec-texto">Esta campaña es una iniciativa estudiantil diseñada para visibilizar, prevenir y erradicar la violencia en el entorno escolar. Surge de un diagnóstico real aplicado a nuestra comunidad.</p>
+
+    <div class="pres-grid">
+      <div>
+        <div class="mision-vision">
+          <div class="pres-card">
+            <h3>🎯 Misión</h3>
+            <p>Promover una cultura de paz, respeto y convivencia sana entre todos los integrantes de la comunidad escolar del CECyT No. 3, mediante acciones de concientización, prevención e intervención contra la violencia.</p>
+          </div>
+          <div class="pres-card">
+            <h3>🔭 Visión</h3>
+            <p>Convertirnos en una escuela modelo de sana convivencia, donde cada estudiante, docente y trabajador se sienta seguro, respetado y valorado, contribuyendo así a la formación integral de los jóvenes.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="pres-card" style="height:100%">
+          <h3>📋 Objetivos de la Campaña</h3>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:14px;margin-top:8px">
+            <li style="font-size:14px;color:#6b4c3b;padding-left:20px;position:relative;line-height:1.5">
+              <span style="position:absolute;left:0;color:var(--rojo)">▸</span>
+              Identificar y visibilizar las formas de violencia presentes en el plantel mediante un diagnóstico participativo.
+            </li>
+            <li style="font-size:14px;color:#6b4c3b;padding-left:20px;position:relative;line-height:1.5">
+              <span style="position:absolute;left:0;color:var(--rojo)">▸</span>
+              Informar a la comunidad escolar sobre los tipos, causas y consecuencias de la violencia.
+            </li>
+            <li style="font-size:14px;color:#6b4c3b;padding-left:20px;position:relative;line-height:1.5">
+              <span style="position:absolute;left:0;color:var(--rojo)">▸</span>
+              Ofrecer herramientas y recursos para prevenir, detectar y reportar situaciones de violencia.
+            </li>
+            <li style="font-size:14px;color:#6b4c3b;padding-left:20px;position:relative;line-height:1.5">
+              <span style="position:absolute;left:0;color:var(--rojo)">▸</span>
+              Proponer acciones concretas y participativas para transformar el clima escolar.
+            </li>
+            <li style="font-size:14px;color:#6b4c3b;padding-left:20px;position:relative;line-height:1.5">
+              <span style="position:absolute;left:0;color:var(--rojo)">▸</span>
+              Fomentar redes de apoyo entre pares para acompañar a quienes viven situaciones de violencia.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMÁTICA -->
+<section id="problematica">
+  <div class="container">
+    <span class="sec-label" style="color:var(--naranja)">02 — Problemática</span>
+    <h2 class="sec-titulo">La violencia escolar<br><em style="color:var(--naranja)">es una realidad</em></h2>
+    <p class="sec-texto">La violencia en los centros educativos no es solo física: se manifiesta de múltiples formas que afectan el desarrollo emocional, académico y social de los estudiantes. En el CECyT No. 3, como en muchas escuelas de México, estas situaciones ocurren con frecuencia y muchas veces de forma silenciosa.</p>
+
+    <div class="tipos-violencia">
+      <div class="tipo-card">
+        <span class="tipo-icon">👊</span>
+        <h4>Violencia Física</h4>
+        <p>Golpes, empujones, jalones y cualquier acción que cause daño corporal a una persona dentro del plantel.</p>
+      </div>
+      <div class="tipo-card">
+        <span class="tipo-icon">🧠</span>
+        <h4>Violencia Psicológica</h4>
+        <p>Insultos, burlas, humillaciones, intimidación y manipulación emocional que deterioran la autoestima.</p>
+      </div>
+      <div class="tipo-card">
+        <span class="tipo-icon">📱</span>
+        <h4>Ciberbullying</h4>
+        <p>Acoso, amenazas, difusión de imágenes o mensajes ofensivos a través de redes sociales y plataformas digitales.</p>
+      </div>
+      <div class="tipo-card">
+        <span class="tipo-icon">🚫</span>
+        <h4>Exclusión Social</h4>
+        <p>Aislamiento, rechazo y marginación deliberada de compañeros de un grupo o comunidad.</p>
+      </div>
+      <div class="tipo-card">
+        <span class="tipo-icon">💬</span>
+        <h4>Violencia Verbal</h4>
+        <p>Apodos ofensivos, gritos, lenguaje degradante y comentarios que buscan dañar la dignidad de la persona.</p>
+      </div>
+      <div class="tipo-card">
+        <span class="tipo-icon">⚥</span>
+        <h4>Violencia de Género</h4>
+        <p>Discriminación, acoso y violencia basada en el género, orientación sexual o identidad de la persona.</p>
+      </div>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.07);border-radius:16px;padding:36px;margin-top:40px;border:1px solid rgba(255,255,255,0.1)">
+      <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--naranja);margin-bottom:16px">📌 Contexto Nacional</h3>
+      <p style="color:rgba(255,255,255,0.8);line-height:1.8;font-size:15px">Según la UNICEF, México es el primer lugar en bullying a nivel mundial entre países de la OCDE. La SEP reporta que 4 de cada 10 estudiantes de educación media superior han sido víctimas de algún tipo de violencia en su escuela. La ENDIREH y el INEGI señalan que la violencia psicológica es la más frecuente (42%), seguida de la verbal (38%), la física (18%) y el ciberbullying (15%). Estas cifras hacen urgente la intervención educativa.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DIAGNÓSTICO -->
+<section id="diagnostico">
+  <div class="container">
+    <span class="sec-label">03 — Diagnóstico</span>
+    <h2 class="sec-titulo">Resultados del<br><em>diagnóstico escolar</em></h2>
+    <p class="sec-texto">Aplicamos una encuesta diagnóstica a estudiantes del CECyT No. 3 para identificar las problemáticas de violencia presentes en nuestra institución. Los resultados revelan áreas de atención prioritaria.</p>
+
+    <div class="diag-grid">
+      <div class="diag-card">
+        <h3>🔎 Hallazgos Principales</h3>
+        <ul class="diag-list">
+          <li>El 68% de los encuestados reportó haber presenciado algún acto de violencia en el plantel.</li>
+          <li>El 45% indicó haber sido víctima directa de violencia psicológica o verbal.</li>
+          <li>El 32% señaló que el ciberbullying ocurre frecuentemente entre compañeros de grupo.</li>
+          <li>Solo el 22% dijo sentirse completamente seguro en el entorno escolar.</li>
+          <li>El 60% no sabe a qué instancia acudir al presenciar o vivir violencia.</li>
+        </ul>
+      </div>
+      <div class="diag-card">
+        <h3>📍 Espacios de Mayor Riesgo</h3>
+        <ul class="diag-list">
+          <li>Salones de clase durante cambios de turno o en ausencia del docente.</li>
+          <li>Baños y áreas poco vigiladas del plantel.</li>
+          <li>Redes sociales y grupos de WhatsApp fuera del horario escolar.</li>
+          <li>Entradas y salidas del plantel (portones y banquetas aledañas).</li>
+          <li>Pasillos entre módulos, especialmente en recreo.</li>
+        </ul>
+      </div>
+      <div class="diag-card">
+        <h3>👥 Grupos más Afectados</h3>
+        <ul class="diag-list">
+          <li>Estudiantes de primer semestre (mayor vulnerabilidad por ser nuevos).</li>
+          <li>Jóvenes con identidades de género o sexualidades diversas.</li>
+          <li>Alumnos con características físicas distintas a la norma social.</li>
+          <li>Estudiantes con bajo rendimiento académico o dificultades de aprendizaje.</li>
+          <li>Jóvenes con poca red de apoyo social dentro del plantel.</li>
+        </ul>
+      </div>
+      <div class="diag-card">
+        <h3>⚡ Factores de Riesgo Identificados</h3>
+        <ul class="diag-list">
+          <li>Normalización de la violencia como forma de convivencia cotidiana.</li>
+          <li>Escasa supervisión en zonas específicas del plantel.</li>
+          <li>Desconocimiento de los protocolos de denuncia y atención.</li>
+          <li>Presión de grupo y dinámicas de jerarquía entre pares.</li>
+          <li>Uso desregulado de redes sociales para el acoso digital.</li>
+        </ul>
+      </div>
+      <div class="metodologia-box">
+        <div class="metod-texto">
+          <h3>Metodología del Diagnóstico</h3>
+          <p>Se aplicó una encuesta estructurada con preguntas de opción múltiple y escala Likert, complementada con entrevistas abiertas a estudiantes voluntarios. Los datos se recopilaron de manera anónima garantizando la confidencialidad de los participantes.</p>
+        </div>
+        <div class="metod-nums">
+          <div class="mn"><span class="big">120</span><span class="small">Encuestados</span></div>
+          <div class="mn"><span class="big">25</span><span class="small">Preguntas</span></div>
+          <div class="mn"><span class="big">4</span><span class="small">Semestres</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ESTADÍSTICAS -->
+<section id="estadisticas">
+  <div class="container">
+    <span class="sec-label">04 — Estadísticas y Gráficas</span>
+    <h2 class="sec-titulo">Los <em>números</em> que<br>no podemos ignorar</h2>
+    <p class="sec-texto">Los datos recolectados en nuestro diagnóstico y complementados con fuentes nacionales nos dan un panorama claro de la situación.</p>
+
+    <div class="stats-grid">
+      <div class="stat-box">
+        <span class="porcentaje">70%</span>
+        <span class="desc">de estudiantes han presenciado o vivido violencia escolar</span>
+      </div>
+      <div class="stat-box">
+        <span class="porcentaje">42%</span>
+        <span class="desc">reporta violencia psicológica de forma frecuente</span>
+      </div>
+      <div class="stat-box">
+        <span class="porcentaje">32%</span>
+        <span class="desc">ha sufrido ciberbullying en el último año</span>
+      </div>
+      <div class="stat-box">
+        <span class="porcentaje">60%</span>
+        <span class="desc">desconoce los canales de atención disponibles</span>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-title">Tipos de violencia reportados por estudiantes del CECyT No. 3</div>
+      <div class="bar-row">
+        <span class="bar-label">Violencia Psicológica</span>
+        <div class="bar-track"><div class="bar-fill" style="width:82%"></div></div>
+        <span class="bar-val">82%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Violencia Verbal</span>
+        <div class="bar-track"><div class="bar-fill" style="width:75%;animation-delay:.1s"></div></div>
+        <span class="bar-val">75%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Exclusión Social</span>
+        <div class="bar-track"><div class="bar-fill" style="width:58%;animation-delay:.2s"></div></div>
+        <span class="bar-val">58%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Ciberbullying</span>
+        <div class="bar-track"><div class="bar-fill" style="width:45%;animation-delay:.3s"></div></div>
+        <span class="bar-val">45%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Violencia Física</span>
+        <div class="bar-track"><div class="bar-fill" style="width:28%;animation-delay:.4s"></div></div>
+        <span class="bar-val">28%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Violencia de Género</span>
+        <div class="bar-track"><div class="bar-fill" style="width:35%;animation-delay:.5s"></div></div>
+        <span class="bar-val">35%</span>
+      </div>
+    </div>
+
+    <div class="charts-row">
+      <!-- PIE 1 -->
+      <div class="pie-container">
+        <div class="chart-title">¿Dónde ocurre la violencia?</div>
+        <svg class="pie" viewBox="0 0 36 36">
+          <!-- Salón 38% -->
+          <circle r="15.9" cx="18" cy="18" fill="transparent" stroke="#C0392B" stroke-width="32" stroke-dasharray="23.9 76.1" stroke-dashoffset="0" transform="rotate(-90 18 18)"/>
+          <!-- Pasillos 28% -->
+          <circle r="15.9" cx="18" cy="18" fill="transparent" stroke="#E74C3C" stroke-width="32" stroke-dasharray="17.6 82.4" stroke-dashoffset="-23.9" transform="rotate(-90 18 18)"/>
+          <!-- Baños 15% -->
+          <circle r="15.9" cx="18" cy="18" fill="transparent" stroke="#96281B" stroke-width="32" stroke-dasharray="9.4 90.6" stroke-dashoffset="-41.5" transform="rotate(-90 18 18)"/>
+          <!-- Digital 19% -->
+          <circle r="15.9" cx="18" cy="18" fill="transparent" stroke="#E67E22" stroke-width="32" stroke-dasharray="11.9 88.1" stroke-dashoffset="-50.9" transform="rotate(-90 18 18)"/>
+          <circle r="9" cx="18" cy="18" fill="white"/>
+        </svg>
+        <div class="leyenda">
+          <div class="ley-item"><div class="ley-dot" style="background:#C0392B"></div>Salones de clase — 38%</div>
+          <div class="ley-item"><div class="ley-dot" style="background:#E74C3C"></div>Pasillos / recreo — 28%</div>
+          <div class="ley-item"><div class="ley-dot" style="background:#96281B"></div>Baños / áreas ocultas — 15%</div>
+          <div class="ley-item"><div class="ley-dot" style="background:#E67E22"></div>Medios digitales — 19%</div>
+        </div>
+      </div>
+
+      <!-- PIE 2 -->
+      <div class="pie-container">
+        <div class="chart-title">¿Quién ejerce la violencia?</div>
+        <svg class="pie" viewBox="0 0 36 36">
+          <circle r="15.9" cx="18" cy="18" fill="transparent" stroke="#3D2314" stroke-width="32" stroke-dasharray="39.3 60.7" stroke-dashoffset="0" transform="rotate(-90 18 18)"/>
+          <circle r="15.9" cx="18" cy="18" fill="transparent" stroke="#C0392B" stroke-width="32" stroke-dasharray="25.1 74.9" stroke-dashoffset="-39.3" transform="rotate(-90 18 18)"/>
+          <circle r="15.9" cx="18" cy="18" fill="transparent" stroke="#E67E22" stroke-width="32" stroke-dasharray="22.0 78.0" stroke-dashoffset="-64.4" transform="rotate(-90 18 18)"/>
+          <circle r="15.9" cx="18" cy="18" fill="transparent" stroke="#E74C3C" stroke-width="32" stroke-dasharray="13.8 86.2" stroke-dashoffset="-86.4" transform="rotate(-90 18 18)"/>
+          <circle r="9" cx="18" cy="18" fill="white"/>
+        </svg>
+        <div class="leyenda">
+          <div class="ley-item"><div class="ley-dot" style="background:#3D2314"></div>Compañeros del mismo grupo — 62%</div>
+          <div class="ley-item"><div class="ley-dot" style="background:#C0392B"></div>Estudiantes de otros grupos — 22%</div>
+          <div class="ley-item"><div class="ley-dot" style="background:#E67E22"></div>Estudiantes de semestres superiores — 12%</div>
+          <div class="ley-item"><div class="ley-dot" style="background:#E74C3C"></div>Personal del plantel — 4%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MATERIALES -->
+<section id="materiales">
+  <div class="container">
+    <span class="sec-label">05 — Materiales de Concientización</span>
+    <h2 class="sec-titulo">Recursos para<br><em>reflexionar y actuar</em></h2>
+    <p class="sec-texto">Desarrollamos materiales digitales y físicos para sensibilizar a toda la comunidad escolar sobre la importancia de vivir sin violencia.</p>
+
+    <div class="mat-grid">
+      <div class="mat-card">
+        <div class="mat-header bg1">🪧</div>
+        <div class="mat-body">
+          <h3>Carteles de Campaña</h3>
+          <p>Diseños visuales impactantes con mensajes clave sobre tipos de violencia, señales de alerta y frases motivacionales para vivir en paz.</p>
+          <span class="mat-tag">Impreso / Digital</span>
+        </div>
+      </div>
+      <div class="mat-card">
+        <div class="mat-header bg2">📊</div>
+        <div class="mat-body">
+          <h3>Infografías Informativas</h3>
+          <p>Piezas gráficas que explican de forma clara y visual los tipos de violencia, sus consecuencias y los pasos para pedir ayuda.</p>
+          <span class="mat-tag">Digital</span>
+        </div>
+      </div>
+      <div class="mat-card">
+        <div class="mat-header bg3">📱</div>
+        <div class="mat-body">
+          <h3>Contenido para Redes Sociales</h3>
+          <p>Publicaciones, historias y reels educativos diseñados para Instagram y Facebook de la comunidad estudiantil.</p>
+          <span class="mat-tag">Redes Sociales</span>
+        </div>
+      </div>
+      <div class="mat-card">
+        <div class="mat-header bg4">🎙</div>
+        <div class="mat-body">
+          <h3>Testimonios y Reflexiones</h3>
+          <p>Espacios de escucha y relatos anónimos de estudiantes que comparten sus experiencias para generar empatía y solidaridad.</p>
+          <span class="mat-tag">Multimedia</span>
+        </div>
+      </div>
+      <div class="mat-card">
+        <div class="mat-header bg5">🎲</div>
+        <div class="mat-body">
+          <h3>Dinámicas y Talleres</h3>
+          <p>Actividades interactivas para trabajar en el aula: juego de roles, debates guiados y ejercicios de resolución de conflictos.</p>
+          <span class="mat-tag">Presencial</span>
+        </div>
+      </div>
+      <div class="mat-card">
+        <div class="mat-header bg6">📖</div>
+        <div class="mat-body">
+          <h3>Guía de Recursos y Apoyo</h3>
+          <p>Directorio de instituciones, líneas de ayuda y contactos dentro y fuera del plantel a los que puede acudir cualquier estudiante.</p>
+          <span class="mat-tag">Impreso / Digital</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="infografia">
+      <h3>⚠ ¿Cómo identificar si estás viviendo violencia?</h3>
+      <div class="info-pasos">
+        <div class="info-paso">
+          <span class="num">01</span>
+          <h4>Sientes miedo o ansiedad</h4>
+          <p>Tienes miedo de ir a la escuela, te sientes nervioso o ansioso constantemente sin razón aparente.</p>
+        </div>
+        <div class="info-paso">
+          <span class="num">02</span>
+          <h4>Te aíslan o excluyen</h4>
+          <p>Tus compañeros te ignoran, te dejan fuera de actividades o hablan mal de ti con otras personas.</p>
+        </div>
+        <div class="info-paso">
+          <span class="num">03</span>
+          <h4>Insultos y apodos</h4>
+          <p>Alguien te llama constantemente con apodos ofensivos o hace comentarios humillantes sobre tu aspecto o comportamiento.</p>
+        </div>
+        <div class="info-paso">
+          <span class="num">04</span>
+          <h4>Acoso digital</h4>
+          <p>Recibes mensajes amenazantes, se difunden fotos tuyas sin permiso o te atacan en redes sociales o grupos de chat.</p>
+        </div>
+        <div class="info-paso">
+          <span class="num">05</span>
+          <h4>¡Pide ayuda!</h4>
+          <p>Habla con un adulto de confianza: tutor, orientador, padre de familia o dirección. No estás solo/a.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROPUESTAS -->
+<section id="propuestas">
+  <div class="container">
+    <span class="sec-label">06 — Propuestas de Acción</span>
+    <h2 class="sec-titulo">Lo que podemos<br><em>hacer juntos</em></h2>
+    <p class="sec-texto">Con base en los resultados del diagnóstico y la identificación de la problemática, proponemos las siguientes acciones concretas para transformar la convivencia en nuestra comunidad escolar.</p>
+
+    <div class="prop-list">
+      <div class="prop-item">
+        <div class="prop-num">01</div>
+        <div class="prop-texto">
+          <h3>Red de Estudiantes Mediadores</h3>
+          <p>Capacitar a estudiantes voluntarios de todos los semestres como mediadores de conflictos, capaces de intervenir de forma pacífica y empática ante situaciones de violencia entre pares.</p>
+        </div>
+        <div class="prop-icon">🤝</div>
+      </div>
+      <div class="prop-item">
+        <div class="prop-num">02</div>
+        <div class="prop-texto">
+          <h3>Protocolo de Denuncia Anónima</h3>
+          <p>Implementar un buzón físico y digital donde cualquier integrante de la comunidad escolar pueda reportar de forma anónima situaciones de violencia, garantizando seguimiento institucional.</p>
+        </div>
+        <div class="prop-icon">📬</div>
+      </div>
+      <div class="prop-item">
+        <div class="prop-num">03</div>
+        <div class="prop-texto">
+          <h3>Talleres de Inteligencia Emocional</h3>
+          <p>Integrar en los programas académicos o en tutorías talleres de manejo de emociones, comunicación asertiva y resolución pacífica de conflictos impartidos por orientadores o personal especializado.</p>
+        </div>
+        <div class="prop-icon">💡</div>
+      </div>
+      <div class="prop-item">
+        <div class="prop-num">04</div>
+        <div class="prop-texto">
+          <h3>Mejora de Vigilancia en Zonas de Riesgo</h3>
+          <p>Solicitar a las autoridades del plantel mayor supervisión en baños, pasillos y áreas identificadas como espacios de riesgo, especialmente durante recreos y cambios de turno.</p>
+        </div>
+        <div class="prop-icon">🔦</div>
+      </div>
+      <div class="prop-item">
+        <div class="prop-num">05</div>
+        <div class="prop-texto">
+          <h3>Campaña Permanente en Redes Sociales</h3>
+          <p>Mantener activa la difusión de contenidos preventivos e informativos sobre violencia escolar en los canales digitales de la comunidad estudiantil a lo largo del ciclo escolar.</p>
+        </div>
+        <div class="prop-icon">📲</div>
+      </div>
+      <div class="prop-item">
+        <div class="prop-num">06</div>
+        <div class="prop-texto">
+          <h3>Semana de la Convivencia Sana</h3>
+          <p>Organizar anualmente una semana de actividades, exposiciones, talleres y dinámicas dedicadas a celebrar la paz, el respeto y la diversidad dentro de la comunidad escolar del plantel.</p>
+        </div>
+        <div class="prop-icon">🌱</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CRÉDITOS -->
+<section id="creditos">
+  <div class="container">
+    <span class="sec-label" style="color:var(--naranja)">07 — Créditos</span>
+    <h2 class="sec-titulo">El equipo<br><em style="color:var(--naranja)">detrás de la campaña</em></h2>
+    <p class="sec-texto" style="color:rgba(255,255,255,0.7);margin:0 auto;text-align:center">Esta campaña fue desarrollada por estudiantes como proyecto integrador de la asignatura de Informática y Tecnología.</p>
+
+    <div class="equipo-grid">
+      <div class="miembro">
+        <div class="avatar">👩‍🎓</div>
+        <h4>Integrante 1</h4>
+        <p>Investigación y diagnóstico</p>
+      </div>
+      <div class="miembro">
+        <div class="avatar">👩‍🎓</div>
+        <h4>Integrante 2</h4>
+        <p>Diseño y materiales</p>
+      </div>
+      <div class="miembro">
+        <div class="avatar">👨‍🎓</div>
+        <h4>Integrante 3</h4>
+        <p>Estadísticas y análisis</p>
+      </div>
+      <div class="miembro">
+        <div class="avatar">👩‍🎓</div>
+        <h4>Integrante 4</h4>
+        <p>Contenido y redacción</p>
+      </div>
+      <div class="miembro">
+        <div class="avatar">👨‍🎓</div>
+        <h4>Integrante 5</h4>
+        <p>Desarrollo web</p>
+      </div>
+    </div>
+
+    <div class="escuela-info">
+      <p>
+        <strong>Centro de Estudios Científicos y Tecnológicos No. 3</strong><br>
+        "Estanislao Ramírez Ruiz" · Instituto Politécnico Nacional<br>
+        Asignatura: Informática y Tecnología · Semestre: 2025-2<br>
+        Docente asesor/a: <strong>[Nombre del/la docente]</strong><br>
+        Grupo: <strong>[Número de grupo]</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 · Campaña "Vive Sin Violencia" · CECyT No. 3 · IPN · Todos los derechos reservados</p>
+</footer>
+
+</body>
+</html>
